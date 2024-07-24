@@ -1,17 +1,8 @@
 import React from 'react';
-import {Text, useColorScheme, View} from 'react-native';
-
-// list of todo task
-// add button ==> input box and submit button
-// update list item
-// delete list item
+import ToDoComponent from './src/components/ToDoComponent';
 
 function App() {
-  return (
-    <View>
-      <Text>Hello, this is my first todo app</Text>
-    </View>
-  );
+  return <ToDoComponent />;
 }
 
 export default App;
