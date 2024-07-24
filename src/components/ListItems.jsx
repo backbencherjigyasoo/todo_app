@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, FlatList, Text, View} from 'react-native';
 
 // list of todo task
@@ -22,14 +22,15 @@ const list = [
 ];
 
 const ListItems = () => {
+  const [listItems, setListItems] = useState(list);
   return (
     <View>
       {/* button should be designed in a proper way */}
       <Button title="Add" color={'#841584'} />
 
-      {/* listings should be in a card */}
+      {/* here... we have to design card for each list item */}
       <FlatList
-        data={list}
+        data={listItems}
         renderItem={({item}) => <Text>{item.title}</Text>}
       />
     </View>
