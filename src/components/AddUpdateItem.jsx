@@ -1,14 +1,22 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 
-const AddUpdateItem = ({onAddItem, setIsModalVisible}) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+const AddUpdateItem = ({onAddItem, item = {}, setIsModalVisible}) => {
+  const [formFields, setFormFields] = useState({
+    title: item.title || '',
+    description: item.description || '',
+  });
 
-  const handleAddItem = () => {
-    onAddItem(title, description);
-    setTitle('');
-    setDescription('');
+  console.log('formFields', formFields);
+
+  const handleAddItem = item => {
+    onAddItem(formFields.title, formFields.description);
+    if (!Object.keys(item).length > 0) {
+      setFormFields({
+        title: '',
+        description: '',
+      });
+    }
   };
 
   return (
@@ -16,20 +24,28 @@ const AddUpdateItem = ({onAddItem, setIsModalVisible}) => {
       <Text style={styles.label}>Title:</Text>
       <TextInput
         style={styles.input}
-        value={title}
-        onChangeText={setTitle}
+        value={formFields.title}
+        onChangeText={e => setFormFields({...formFields, title: e})}
         placeholder="Enter title"
       />
       <Text style={styles.label}>Description:</Text>
       <TextInput
         multiline
         style={styles.input}
-        value={description}
-        onChangeText={setDescription}
+        value={formFields.description}
+        onChangeText={e => {
+          setFormFields({
+            ...formFields,
+            description: e,
+          });
+        }}
         placeholder="Enter description"
       />
       <View style={styles.buttons}>
-        <Button title="Add Item" onPress={handleAddItem} />
+        <Button
+          title={`${item.id ? 'Update' : 'Add'}`}
+          onPress={() => handleAddItem(item)}
+        />
         <Button title="Close" onPress={() => setIsModalVisible(false)} />
       </View>
     </View>
