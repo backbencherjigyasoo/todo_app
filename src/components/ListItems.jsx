@@ -30,17 +30,12 @@ const initialList = [
 const ListItems = () => {
   const [listItems, setListItems] = useState(initialList);
   const [selectedId, setSelectedId] = useState(null);
+  const [item, setItem] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleAddItem = (item = {}) => {
-    const newItem = {
-      id: item.id || listItems.length + 1,
-      title: item.title || '',
-      description: item.description || '',
-      completed: item.completed || false,
-    };
-    setListItems([...listItems, newItem]);
-    setIsModalVisible(false); // Hide the modal after adding the item
+  const handleUpdateItem = item => {
+    setIsModalVisible(true);
+    setItem(item);
   };
 
   const Item = ({
@@ -66,14 +61,15 @@ const ListItems = () => {
           title="Edit"
           onPress={() => {
             /* Add Edit functionality */
-            handleAddItem(item);
+            setIsModalVisible(true);
+            handleUpdateItem(item);
           }}
         />
         <Button
           title="Delete"
           onPress={() => {
             /* Add Delete functionality */
-            handleAddItem(item);
+            setListItems(listItems.filter(i => i.id !== item.id));
           }}
         />
       </View>
@@ -104,7 +100,7 @@ const ListItems = () => {
         keyExtractor={item => item.id.toString()}
       />
       <View style={styles.addButtonContainer}>
-        <Button title="Add" onPress={() => setIsModalVisible(true)} />
+        <Button title="Add" onPress={() => {setIsModalVisible(true); handleUpdateItem({})}} />
       </View>
       <Modal
         transparent={true}
@@ -114,8 +110,17 @@ const ListItems = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <AddUpdateItem
-              onAddItem={handleAddItem}
+              item={item}
               setIsModalVisible={setIsModalVisible}
+              handleAddUpdateItem={(item) => {
+                if(item.id) {
+                  setListItems(listItems.map(i => i.id === item.id ? item : i));
+                }else{
+                  setListItems([...listItems,  {...item, id: listItems.length + 1}]);
+                }
+                
+                setIsModalVisible(false);
+              }}
             />
           </View>
         </View>

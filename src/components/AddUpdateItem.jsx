@@ -1,23 +1,14 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Button, StyleSheet, Switch} from 'react-native';
 
-const AddUpdateItem = ({onAddItem, item = {}, setIsModalVisible}) => {
+const AddUpdateItem = ({ item = {}, setIsModalVisible, handleAddUpdateItem}) => {
   const [formFields, setFormFields] = useState({
+    id: item.id || null,
     title: item.title || '',
     description: item.description || '',
+    completed: item.completed || false,
   });
 
-  console.log('formFields', formFields);
-
-  const handleAddItem = item => {
-    onAddItem(formFields.title, formFields.description);
-    if (!Object.keys(item).length > 0) {
-      setFormFields({
-        title: '',
-        description: '',
-      });
-    }
-  };
 
   return (
     <View style={styles.formContainer}>
@@ -41,10 +32,21 @@ const AddUpdateItem = ({onAddItem, item = {}, setIsModalVisible}) => {
         }}
         placeholder="Enter description"
       />
+
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+      <Text style={styles.label}>Completed:</Text>
+      <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={formFields.completed ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={value => setFormFields({...formFields, completed: value})}
+        value={formFields.completed}
+      />
+      </View>
       <View style={styles.buttons}>
         <Button
           title={`${item.id ? 'Update' : 'Add'}`}
-          onPress={() => handleAddItem(item)}
+          onPress={() => handleAddUpdateItem(formFields)}
         />
         <Button title="Close" onPress={() => setIsModalVisible(false)} />
       </View>
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 'auto',
     gap: 10,
+    marginVertical: 10,
   },
 });
 
