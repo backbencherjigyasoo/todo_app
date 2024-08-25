@@ -94,11 +94,14 @@ const ListItems = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
+      {
+        listItems?.length > 0 ? <FlatList
         data={listItems}
         renderItem={renderItems}
         keyExtractor={item => item.id.toString()}
-      />
+      /> : <Text style={{textAlign: "center", justifyContent: "center", alignContent: "center"}}>You don't have any items pending</Text>
+      }
+      
       <View style={styles.addButtonContainer}>
         <Button title="Add" onPress={() => {setIsModalVisible(true); handleUpdateItem({})}} />
       </View>

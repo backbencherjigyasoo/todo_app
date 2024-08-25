@@ -18,6 +18,7 @@ const AddUpdateItem = ({ item = {}, setIsModalVisible, handleAddUpdateItem}) => 
         value={formFields.title}
         onChangeText={e => setFormFields({...formFields, title: e})}
         placeholder="Enter title"
+        
       />
       <Text style={styles.label}>Description:</Text>
       <TextInput
@@ -30,6 +31,7 @@ const AddUpdateItem = ({ item = {}, setIsModalVisible, handleAddUpdateItem}) => 
             description: e,
           });
         }}
+        autoCapitalize='words'
         placeholder="Enter description"
       />
 
